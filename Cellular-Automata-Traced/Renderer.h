@@ -29,7 +29,13 @@ public:
 		unsigned int i = 0;
 
 		for (int x = 0, y = 0; y < h; i++) {
-			RenderViewRay((x * step_x) - 1, (y * step_y) - 1, i);
+			float vx = (x * step_x) - 1;
+			float vy = (y * step_y) - 1;
+
+			vx *= camera->fov;
+			vy *= camera->fov * (h / w);
+
+			RenderViewRay(vx, vy, i);
 
 			x++;
 			if (x >= w) { x = 0; y++; }

@@ -23,7 +23,7 @@ void triggerReDraw()
 	framesInSec++;
 
 	//_camera->MoveCamera(Vec3(0, 0, 0.005f));
-	_camera->RotateCamera(Vec3(0, 0.05f, 0));
+	_camera->RotateCamera(Vec3(0, 0.01f, 0));
 	_renderer.RenderFrame();
 
 	if (clock() - startTime >= 1000)
