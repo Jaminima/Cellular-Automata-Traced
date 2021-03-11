@@ -8,14 +8,14 @@ class Renderer
 {
 private:
 	AutomotaGrid* automota;
-	Camera *camera;
+	Camera* camera;
 
 public:
 	unsigned int w = 200, h = 200;
 	unsigned int maxView = 10;
 	Color* Frame;
 
-	Renderer(AutomotaGrid* _automata, Camera *_camera) {
+	Renderer(AutomotaGrid* _automata, Camera* _camera) {
 		automota = _automata;
 		camera = _camera;
 
@@ -25,14 +25,14 @@ public:
 
 	void RenderFrame() {
 		double step_x = 2.0f / w;
-		double step_y = 2.0f/ h;
+		double step_y = 2.0f / h;
 		unsigned int i = 0;
 
-		for (int x = 0, y = 0; y < h;i++) {
-			RenderViewRay((x * step_x)-1, (y * step_y)-1, i);
+		for (int x = 0, y = 0; y < h; i++) {
+			RenderViewRay((x * step_x) - 1, (y * step_y) - 1, i);
 
 			x++;
-			if (x >= w) { x = 0; y ++; }
+			if (x >= w) { x = 0; y++; }
 		}
 	}
 
@@ -46,20 +46,19 @@ public:
 	}
 
 	void RenderViewRay(float x, float y, unsigned int i) {
-		Vec3 dir(x,y,1);
+		Vec3 dir(x, y, 1);
 		dir = camera->RotateDirection(dir);
 
 		for (int j = 0; j < maxView; j++) {
 			Vec3 Cell = (dir * j) + camera->Position;
 
-			int indx = roundf(Cell.x) + (roundf(Cell.y)*automota->w) + (roundf(Cell.z)*automota->w*automota->h);
+			int indx = roundf(Cell.x) + (roundf(Cell.y) * automota->w) + (roundf(Cell.z) * automota->w * automota->h);
 
 			if (automota->Grid[indx]) {
 				Frame[i] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
 				return;
 			}
 		}
-		Frame[i] = Color(0,0,0);
+		Frame[i] = Color(0, 0, 0);
 	}
 };
-

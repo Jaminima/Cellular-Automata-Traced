@@ -8,8 +8,8 @@
 unsigned int framesInSec = 0;
 time_t startTime = clock();
 
-AutomotaGrid *_automota = new AutomotaGrid();
-Camera *_camera = new Camera();
+AutomotaGrid* _automota = new AutomotaGrid();
+Camera* _camera = new Camera();
 Renderer _renderer = Renderer(_automota, _camera);
 
 void drawFrame()
@@ -17,7 +17,6 @@ void drawFrame()
 	glDrawPixels(_renderer.w, _renderer.h, GL_RGBA, GL_UNSIGNED_INT, _renderer.Frame);
 	glutSwapBuffers();
 }
-
 
 void triggerReDraw()
 {

@@ -32,13 +32,13 @@ public:
 		return N;
 	}
 
-	Vec3 operator+(Vec3 V) 
+	Vec3 operator+(Vec3 V)
 	{
 		Vec3 N(x + V.x, y + V.y, z + V.z);
 		return N;
 	}
 
-	void operator+=(Vec3 V) 
+	void operator+=(Vec3 V)
 	{
 		x += V.x;
 		y += V.y;
@@ -59,7 +59,7 @@ public:
 		return N;
 	}
 
-	Vec3 operator*(Vec3 V) 
+	Vec3 operator*(Vec3 V)
 	{
 		Vec3 N(V.x * x, V.y * y, V.z * z);
 		return N;
@@ -87,6 +87,6 @@ public:
 		z /= n;
 	}
 
-	float norm2()  { return dot(*this); }
+	float norm2() { return dot(*this); }
 	float norm() { return sqrt(norm2()); }
 };

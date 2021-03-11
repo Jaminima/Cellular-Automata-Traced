@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    SetupFrame(argc, argv);
+	SetupFrame(argc, argv);
 
-    while(true){}
+	while (true) {}
 }

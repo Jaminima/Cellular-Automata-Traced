@@ -41,8 +41,7 @@ public:
 		char i = 0;
 
 		for (int _x = x - 1, _y = y - 1, _z = z - 1; _z <= z + 1; i++) {
-
-			if (_x >= 0 && _y >= 0 && _z >= 0 && _x <= w && _y <= h && _z <= l) 
+			if (_x >= 0 && _y >= 0 && _z >= 0 && _x <= w && _y <= h && _z <= l)
 				cells[i] = Grid[_x + (_y * w) + (_z * h * w)];
 
 			_x++;
@@ -53,4 +52,3 @@ public:
 		return cells;
 	}
 };
-
