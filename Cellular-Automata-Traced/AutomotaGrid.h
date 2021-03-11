@@ -2,7 +2,6 @@
 class AutomotaGrid
 {
 private:
-	bool *Grid;
 
 	void InitGrid() {
 		Grid = new bool[h * w * l];
@@ -11,10 +10,15 @@ private:
 	}
 
 public:
-	unsigned int w = 10, h = 10, l = 10;
+	bool* Grid;
+	unsigned int w = 100, h = 100, l = 100;
 
 	AutomotaGrid() {
 		this->InitGrid();
+	}
+
+	void SetState(unsigned int x, unsigned int y, unsigned int z, bool State) {
+		Grid[x + (y * w) + (z * w * h)] = State;
 	}
 
 	AutomotaGrid(unsigned int w, unsigned int h, unsigned int l) {

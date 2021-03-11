@@ -1,9 +1,16 @@
 #include <iostream>
-#include "AutomotaGrid.h"
+#include "Renderer.h"
 
 int main()
 {
-    AutomotaGrid *grid = new AutomotaGrid();
+    AutomotaGrid* automota = new AutomotaGrid();
+    Renderer renderer(automota);
 
-    bool* b = grid->GetCellNeighbours(1, 1, 1);
+    automota->SetState(4, 4, 4, true);
+
+    renderer.RenderFrame();
+
+    renderer.OntoConsole();
+
+    while(true){}
 }
