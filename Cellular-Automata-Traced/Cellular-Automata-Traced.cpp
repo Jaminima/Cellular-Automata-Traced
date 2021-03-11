@@ -1,16 +1,9 @@
 #include <iostream>
-#include "Renderer.h"
+#include "Window.h"
 
-int main()
+int main(int argc, char** argv)
 {
-    AutomotaGrid* automota = new AutomotaGrid();
-    Renderer renderer(automota);
-
-    automota->SetState(4, 4, 4, true);
-
-    renderer.RenderFrame();
-
-    renderer.OntoConsole();
+    SetupFrame(argc, argv);
 
     while(true){}
 }

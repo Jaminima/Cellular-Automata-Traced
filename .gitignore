@@ -1,3 +1,6 @@
 ﻿.vs
 Cellular-Automata-Traced/Debug
 Debug
+Cellular-Automata-Traced/Release
+packages
+Release
