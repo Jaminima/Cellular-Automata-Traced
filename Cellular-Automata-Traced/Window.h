@@ -8,11 +8,12 @@
 unsigned int framesInSec = 0;
 time_t startTime = clock();
 
-Renderer _renderer = Renderer(new AutomotaGrid());
+AutomotaGrid *_automota = new AutomotaGrid();
+Camera *_camera = new Camera();
+Renderer _renderer = Renderer(_automota, _camera);
 
 void drawFrame()
 {
-	_renderer.RenderFrame();
 	glDrawPixels(_renderer.w, _renderer.h, GL_RGBA, GL_UNSIGNED_INT, _renderer.Frame);
 	glutSwapBuffers();
 }
@@ -22,6 +23,8 @@ void triggerReDraw()
 {
 	framesInSec++;
 
+	_camera->MoveCamera(Vec3(0, 0, 0.005f));
+	//_camera->RotateCamera(Vec3(0, 0.05f, 0));
 	_renderer.RenderFrame();
 
 	if (clock() - startTime >= 1000)
@@ -42,7 +45,7 @@ void SetupFrame(int argc, char** argv)
 	glutCreateWindow("glDrawPixels example");
 
 	glutDisplayFunc(drawFrame);
-	//glutIdleFunc(triggerReDraw);
+	glutIdleFunc(triggerReDraw);
 
 	//glutPassiveMotionFunc(MouseMove);
 	//glutKeyboardFunc(KeyboardDepressed);

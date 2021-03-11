@@ -1,4 +1,7 @@
 #pragma once
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 class AutomotaGrid
 {
 private:
@@ -6,7 +9,12 @@ private:
 	void InitGrid() {
 		Grid = new bool[h * w * l];
 
-		for (unsigned int i = 0; i < h * w * l; i++) Grid[i] = false;
+		srand(time(NULL));
+
+		for (unsigned int i = 0; i < h * w * l; i++) {
+			int r = rand() % 50;
+			Grid[i] = r == 1;
+		}
 	}
 
 public:
