@@ -25,7 +25,7 @@ using namespace fast_math;
 		Frame = new Color[w * h];
 	}
 
-	Color RenderViewRay(float x, float y, unsigned int i, array_view<int, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
+	Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 		Vec3 dir(x, y, 1);
 		dir = cam.RotateDirection(dir);
 
@@ -34,8 +34,8 @@ using namespace fast_math;
 
 			int indx = roundf(Cell.x) + (roundf(Cell.y) * _aw) + (roundf(Cell.z) * _aw * _ah);
 
-			if (_automataGrid[indx / sizeof(int)] & (1UL << (indx % sizeof(int)))) {
-				return Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			if (!_automataGrid[indx].IsBlack()) {
+				return _automataGrid[indx];
 			}
 		}
 		return Color(0, 0, 0);
@@ -52,7 +52,7 @@ using namespace fast_math;
 		unsigned int _aw = automota->w, _ah = automota->h, _al = automota->l;
 
 		array_view<Color, 2> _Frame(w, h, Frame);
-		array_view<int, 1> _automataGrid(automota->w * automota->h * automota->l / sizeof(int), (int*)automota->Grid);
+		array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
 		parallel_for_each(
 			_Frame.extent,
