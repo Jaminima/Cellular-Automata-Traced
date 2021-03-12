@@ -4,18 +4,20 @@
 #include "Color.h"
 #include "Camera.h"
 
-class Renderer
-{
-private:
+#include <amp.h>
+#include <amp_math.h>
+#include <iostream>
+using namespace concurrency;
+using namespace fast_math;
+
 	AutomotaGrid* automota;
 	Camera* camera;
 
-public:
-	unsigned int w = 200, h = 200;
-	unsigned int maxView = 10;
+	unsigned int w = 1000, h = 1000;
+	const unsigned int maxView = 20;
 	Color* Frame;
 
-	Renderer(AutomotaGrid* _automata, Camera* _camera) {
+	void Setup(AutomotaGrid* _automata, Camera* _camera) {
 		automota = _automata;
 		camera = _camera;
 
@@ -23,23 +25,49 @@ public:
 		Frame = new Color[w * h];
 	}
 
+	Color RenderViewRay(float x, float y, unsigned int i, array_view<int, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
+		Vec3 dir(x, y, 1);
+		dir = cam.RotateDirection(dir);
+
+		for (int j = 0; j < maxView; j++) {
+			Vec3 Cell = (dir * j) + cam.Position;
+
+			int indx = roundf(Cell.x) + (roundf(Cell.y) * _aw) + (roundf(Cell.z) * _aw * _ah);
+
+			if (_automataGrid[indx / sizeof(int)] & (1UL << (indx % sizeof(int)))) {
+				return Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			}
+		}
+		return Color(0, 0, 0);
+	}
+
 	void RenderFrame() {
-		double step_x = 2.0f / w;
-		double step_y = 2.0f / h;
+		float step_x = 2.0f / w;
+		float step_y = 2.0f / h;
 		unsigned int i = 0;
 
-		for (int x = 0, y = 0; y < h; i++) {
-			float vx = (x * step_x) - 1;
-			float vy = (y * step_y) - 1;
+		Camera cam = *camera;
+		float _w = w, _h = h;
 
-			vx *= camera->fov;
-			vy *= camera->fov * (h / w);
+		unsigned int _aw = automota->w, _ah = automota->h, _al = automota->l;
 
-			RenderViewRay(vx, vy, i);
+		array_view<Color, 2> _Frame(w, h, Frame);
+		array_view<int, 1> _automataGrid(automota->w * automota->h * automota->l / sizeof(int), (int*)automota->Grid);
 
-			x++;
-			if (x >= w) { x = 0; y++; }
-		}
+		parallel_for_each(
+			_Frame.extent,
+			[=](index<2> idx) restrict(amp) {
+				float vx = (idx[1] * step_x) - 1;
+				float vy = (idx[0] * step_y) - 1;
+
+				vx *= cam.fov;
+				vy *= cam.fov * (_h / _w);
+
+				_Frame[idx] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
+			}
+		);
+
+		_Frame.synchronize();
 	}
 
 	void OntoConsole() {
@@ -51,20 +79,5 @@ public:
 		}
 	}
 
-	void RenderViewRay(float x, float y, unsigned int i) {
-		Vec3 dir(x, y, 1);
-		dir = camera->RotateDirection(dir);
+	
 
-		for (int j = 0; j < maxView; j++) {
-			Vec3 Cell = (dir * j) + camera->Position;
-
-			int indx = roundf(Cell.x) + (roundf(Cell.y) * automota->w) + (roundf(Cell.z) * automota->w * automota->h);
-
-			if (automota->Grid[indx]) {
-				Frame[i] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
-				return;
-			}
-		}
-		Frame[i] = Color(0, 0, 0);
-	}
-};
