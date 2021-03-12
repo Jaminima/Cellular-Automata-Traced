@@ -56,9 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="..\packages\freeglut.redist.2.8.1.15\build\native\bin\v110\Win32\Release\dynamic\freeglut.dll">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\packages\freeglut.2.8.1.15\build\native\lib\v110\Win32\Release\dynamic\freeglut.lib">
@@ -70,5 +67,10 @@
     <Library Include="..\packages\freeglut.2.8.1.15\build\native\lib\v110\Win32\Release\static\freeglut.lib">
       <Filter>Resource Files</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\packages\freeglut.redist.2.8.1.15\build\native\bin\v110\Win32\Release\dynamic\freeglut.dll">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

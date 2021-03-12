@@ -2,30 +2,37 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
+#include "Color.h"
+
+#include <amp.h>
+#include <amp_math.h>
+#include <iostream>
+using namespace concurrency;
+
 class AutomotaGrid
 {
 private:
 
 	void InitGrid() {
-		Grid = new bool[h * w * l];
-
 		srand(time(NULL));
+		Grid = new Color[h * w * l];
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
-			int r = rand() % 50;
-			Grid[i] = r == 1;
+			int r = rand() % 100;
+			if (r == 0) Grid[i] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			else Grid[i] = Color(0, 0, 0);
 		}
 	}
 
 public:
-	bool* Grid;
-	unsigned int w = 100, h = 100, l = 100;
+	Color* Grid;
+	unsigned int w = 200, h = 200, l = 200;
 
 	AutomotaGrid() {
 		this->InitGrid();
 	}
 
-	void SetState(unsigned int x, unsigned int y, unsigned int z, bool State) {
+	void SetState(unsigned int x, unsigned int y, unsigned int z, Color State) {
 		Grid[x + (y * w) + (z * w * h)] = State;
 	}
 
@@ -36,8 +43,8 @@ public:
 		this->InitGrid();
 	}
 
-	bool* GetCellNeighbours(unsigned int x, unsigned int y, unsigned int z) {
-		bool* cells = new bool[9];
+	Color* GetCellNeighbours(unsigned int x, unsigned int y, unsigned int z) {
+		Color* cells = new Color[9];
 		char i = 0;
 
 		for (int _x = x - 1, _y = y - 1, _z = z - 1; _z <= z + 1; i++) {
