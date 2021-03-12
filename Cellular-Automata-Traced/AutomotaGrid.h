@@ -2,18 +2,22 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
+#include <amp.h>
+#include <amp_math.h>
+#include <iostream>
+using namespace concurrency;
+
 class AutomotaGrid
 {
 private:
 
 	void InitGrid() {
-		Grid = new bool[h * w * l];
-
 		srand(time(NULL));
+		Grid = (bool*)malloc(h*w*l*sizeof(bool));
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
 			int r = rand() % 50;
-			Grid[i] = r == 1;
+			Grid[i] = r == 0;
 		}
 	}
 
