@@ -14,7 +14,7 @@ using namespace fast_math;
 	Camera* camera;
 
 	unsigned int w = 1000, h = 1000;
-	const unsigned int maxView = 20;
+	const unsigned int maxView = 100;
 	Color* Frame;
 
 	void Setup(AutomotaGrid* _automata, Camera* _camera) {

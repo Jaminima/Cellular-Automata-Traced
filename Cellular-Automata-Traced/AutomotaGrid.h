@@ -19,7 +19,7 @@ private:
 
 public:
 	bool* Grid;
-	unsigned int w = 100, h = 100, l = 100;
+	unsigned int w = 200, h = 200, l = 200;
 
 	AutomotaGrid() {
 		this->InitGrid();
