@@ -32,7 +32,7 @@ public:
 		sinz = sinf(Angle.z);
 	}
 
-	Vec3 RotateDirection(Vec3 dir) restrict(amp,cpu)
+	Vec3 RotateDirection(Vec3 dir) restrict(amp, cpu)
 	{
 		dir = Vec3(
 			dir.x,

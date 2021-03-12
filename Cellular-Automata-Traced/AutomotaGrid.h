@@ -15,7 +15,7 @@ private:
 
 	void InitGrid() {
 		srand(time(NULL));
-		Grid = new Color[h*w*l];
+		Grid = new Color[h * w * l];
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
 			int r = rand() % 100;

@@ -4,7 +4,7 @@ class Color
 public:
 	unsigned int R, G, B, A;
 
-	Color() restrict(amp,cpu){
+	Color() restrict(amp, cpu) {
 		R = 0;
 		G = 0;
 		B = 0;
