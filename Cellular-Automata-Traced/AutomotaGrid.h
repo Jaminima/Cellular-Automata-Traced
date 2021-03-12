@@ -20,7 +20,7 @@ private:
 		Grid = new Color[h * w * l];
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
-			int r = rand() % 100;
+			int r = rand() % 50;
 			if (r == 0) Grid[i] = Color(rand()*mul, rand() * mul, rand() * mul);
 			else Grid[i] = Color(0, 0, 0);
 		}
@@ -44,20 +44,4 @@ public:
 		this->l = l;
 		this->InitGrid();
 	}
-
-	/*Color* GetCellNeighbours(unsigned int x, unsigned int y, unsigned int z) {
-		Color* cells = new Color[9];
-		char i = 0;
-
-		for (int _x = x - 1, _y = y - 1, _z = z - 1; _z <= z + 1; i++) {
-			if (_x >= 0 && _y >= 0 && _z >= 0 && _x <= w && _y <= h && _z <= l)
-				cells[i] = Grid[_x + (_y * w) + (_z * h * w)];
-
-			_x++;
-			if (_x > x + 1) { _x = x - 1; _y++; }
-			if (_y > y + 1) { _y = y - 1; _z++; }
-		}
-
-		return cells;
-	}*/
 };

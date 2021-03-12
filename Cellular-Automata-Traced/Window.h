@@ -23,8 +23,7 @@ void triggerReDraw()
 	framesInSec++;
 
 	_camera->MoveCamera(Vec3(0.01f, 0, 0.1f));
-	_camera->RotateCamera(Vec3(0, 0, 0.01f));
-	RenderFrame();
+	//_camera->RotateCamera(Vec3(0, 0, 0.01f));
 
 	if (clock() - startTime >= 1000)
 	{
@@ -34,6 +33,8 @@ void triggerReDraw()
 
 		GameOfLife(_automota);
 	}
+
+	RenderFrame();
 
 	glutPostRedisplay();
 }
