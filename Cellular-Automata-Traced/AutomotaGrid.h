@@ -43,7 +43,7 @@ public:
 		this->InitGrid();
 	}
 
-	Color* GetCellNeighbours(unsigned int x, unsigned int y, unsigned int z) {
+	/*Color* GetCellNeighbours(unsigned int x, unsigned int y, unsigned int z) {
 		Color* cells = new Color[9];
 		char i = 0;
 
@@ -57,5 +57,5 @@ public:
 		}
 
 		return cells;
-	}
+	}*/
 };

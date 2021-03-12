@@ -149,6 +149,7 @@
     <ClInclude Include="AutomotaGrid.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="GridProcessor.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="Window.h" />

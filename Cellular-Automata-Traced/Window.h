@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "Renderer.h"
+#include "GridProcessor.h"
 
 #include "GL/glut.h"
 #include "GL/freeglut.h"
@@ -30,6 +31,8 @@ void triggerReDraw()
 		printf_s("You averaged %d fps\n", framesInSec);
 		framesInSec = 0;
 		startTime = clock();
+
+		GameOfLife(_automota);
 	}
 
 	glutPostRedisplay();
