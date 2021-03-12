@@ -9,6 +9,8 @@
 #include <iostream>
 using namespace concurrency;
 
+const unsigned int mul = UINT_MAX / RAND_MAX;
+
 class AutomotaGrid
 {
 private:
@@ -19,7 +21,7 @@ private:
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
 			int r = rand() % 100;
-			if (r == 0) Grid[i] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			if (r == 0) Grid[i] = Color(rand()*mul, rand() * mul, rand() * mul);
 			else Grid[i] = Color(0, 0, 0);
 		}
 	}
