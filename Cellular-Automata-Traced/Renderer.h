@@ -32,7 +32,7 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	for (int j = 0; j < maxView; j++) {
 		Vec3 Cell = (dir * j) + cam.Position;
 
-		int indx = roundf(Cell.x) + (roundf(Cell.y) * _aw) + (roundf(Cell.z) * _aw * _ah);
+		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
 
 		if (!_automataGrid[indx].IsBlack()) {
 			return _automataGrid[indx];
