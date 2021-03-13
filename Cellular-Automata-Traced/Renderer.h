@@ -14,7 +14,7 @@ AutomotaGrid* automota;
 Camera* camera;
 
 unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 100;
+const unsigned int maxView = 1000;
 Color* Frame;
 
 void Setup(AutomotaGrid* _automata, Camera* _camera) {
@@ -28,6 +28,7 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
+	dir = dir * 0.1f;
 
 	for (int j = 0; j < maxView; j++) {
 		Vec3 Cell = (dir * j) + cam.Position;
