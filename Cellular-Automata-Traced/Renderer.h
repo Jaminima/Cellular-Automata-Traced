@@ -28,15 +28,30 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
-	dir = dir * 0.1f;
+	dir = dir * 0.5f;
 
 	for (int j = 0; j < maxView; j++) {
 		Vec3 Cell = (dir * j) + cam.Position;
 
-		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
+		float _j[3];
 
-		if (!_automataGrid[indx].IsBlack()) {
-			return _automataGrid[indx];
+		if (dir.z > 0) _j[0] = floorf(Cell.z - cam.Position.z) / dir.z;
+		else _j[0] = ceilf(Cell.z - cam.Position.z) / dir.z;
+
+		if (dir.y > 0) _j[1] = floorf(Cell.y - cam.Position.y) / dir.y;
+		else _j[1] = ceilf(Cell.y - cam.Position.y) / dir.y;
+
+		if (dir.x > 0) _j[2] = floorf(Cell.x - cam.Position.x) / dir.x;
+		else _j[2] = ceilf(Cell.x - cam.Position.x) / dir.x;
+
+		for (int k = 0; k < 3; k++) {
+			Cell = (dir * _j[k]) + cam.Position;
+
+			int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
+
+			if (!_automataGrid[indx].IsBlack()) {
+				return _automataGrid[indx];
+			}
 		}
 	}
 	return Color(0, 0, 0);
