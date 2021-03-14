@@ -14,7 +14,7 @@ AutomotaGrid* automota;
 Camera* camera;
 
 unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 1000;
+const unsigned int maxView = 100;
 Color* Frame;
 
 void Setup(AutomotaGrid* _automata, Camera* _camera) {
@@ -30,24 +30,17 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	dir = cam.RotateDirection(dir);
 	dir = dir * 0.5f;
 
-	for (int j = 0; j < maxView; j++) {
-		Vec3 Cell = (dir * j) + cam.Position;
+	for (int k = 1; k < maxView; k++) {
+		Vec3 Cell = (dir*k) + cam.Position;
 
-		float _j[3];
+		for (int kk = 0; kk < 3; kk++) {
+			float j;
+			if (Cell.Data[kk]>cam.Position.Data[kk]) j = (floorf(Cell.Data[kk]) - cam.Position.Data[kk]) / dir.Data[kk];
+			else j = (ceilf(Cell.Data[kk]) - cam.Position.Data[kk]) / dir.Data[kk];
 
-		if (dir.z > 0) _j[0] = floorf(Cell.z - cam.Position.z) / dir.z;
-		else _j[0] = ceilf(Cell.z - cam.Position.z) / dir.z;
+			Vec3 _Cell = (dir * j) + cam.Position;
 
-		if (dir.y > 0) _j[1] = floorf(Cell.y - cam.Position.y) / dir.y;
-		else _j[1] = ceilf(Cell.y - cam.Position.y) / dir.y;
-
-		if (dir.x > 0) _j[2] = floorf(Cell.x - cam.Position.x) / dir.x;
-		else _j[2] = ceilf(Cell.x - cam.Position.x) / dir.x;
-
-		for (int k = 0; k < 3; k++) {
-			Cell = (dir * _j[k]) + cam.Position;
-
-			int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
+			int indx = floorf(_Cell.x) + (floorf(_Cell.y) * _aw) + (floorf(_Cell.z) * _aw * _ah);
 
 			if (!_automataGrid[indx].IsBlack()) {
 				return _automataGrid[indx];
