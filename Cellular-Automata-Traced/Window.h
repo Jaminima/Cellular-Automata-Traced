@@ -7,7 +7,7 @@
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock();
+time_t startTime = clock()+1000;
 
 AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();
@@ -22,7 +22,7 @@ void triggerReDraw()
 {
 	framesInSec++;
 
-	_camera->MoveCamera(Vec3(0.01f, 0, 0.1f));
+	//_camera->MoveCamera(Vec3(0.01f, 0, 0.1f));
 	_camera->RotateCamera(Vec3(0, 0.01f, 0));
 
 	if (clock() - startTime >= 1000)
@@ -31,7 +31,7 @@ void triggerReDraw()
 		framesInSec = 0;
 		startTime = clock();
 
-		GameOfLife(_automota);
+		//GameOfLife(_automota);
 	}
 
 	RenderFrame();
