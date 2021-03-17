@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "Renderer.h"
-//#include "GridProcessor.h"
+#include "GridProcessor.h"
 
 #include "GL/glut.h"
 #include "GL/freeglut.h"
@@ -25,7 +25,7 @@ void triggerReDraw()
 	framesInSec++;
 
 	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
-	_camera->RotateCamera(Vec3(0, -0.01f, 0));
+	_camera->RotateCamera(Vec3(0, -0.01f, -0.01f));
 
 	if (clock() - startTime >= 1000)
 	{
@@ -33,7 +33,7 @@ void triggerReDraw()
 		framesInSec = 0;
 		startTime = clock();
 
-		//GameOfLife(_automota);
+		GameOfLife(_automota);
 	}
 
 	frame.wait();

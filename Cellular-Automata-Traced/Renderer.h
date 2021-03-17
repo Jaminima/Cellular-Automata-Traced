@@ -14,7 +14,7 @@ AutomotaGrid* automota;
 Camera* camera;
 
 unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 100;
+const unsigned int maxView = 50;
 Color* Frame;
 
 template <typename T> int sgn(T val) restrict(amp,cpu) {
