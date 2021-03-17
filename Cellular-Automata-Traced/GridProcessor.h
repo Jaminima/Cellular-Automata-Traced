@@ -52,16 +52,15 @@ void GameOfLife(AutomotaGrid* automata) {
 	unsigned int h = automata->h;
 	unsigned int l = automata->l;
 
-	array_view<Color, 3> _automataGrid(w , h , l, automata->Grid);
-	array_view<Color, 3> _newGrid(w , h , l, automata->Grid);
+	array_view<Color, 3> _automataGrid(w, h, l, automata->Grid);
+	array_view<Color, 3> _newGrid(w, h, l, automata->Grid);
 
 	parallel_for_each(
 		_automataGrid.extent,
 		[=](index<3> idx) restrict(amp) {
-
 			bool amIBlack = _automataGrid[idx].IsBlack();
-			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid, w,h,l);
-			
+			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
+
 			if (alive < 2) _newGrid[idx] = Color(0, 0, 0);
 			else if (alive > 2) _newGrid[idx] = Color(0, 0, 0);
 			else if (alive > 3 && amIBlack) _newGrid[idx] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
@@ -72,5 +71,3 @@ void GameOfLife(AutomotaGrid* automata) {
 
 	_newGrid.synchronize(access_type_write);
 }
-
-

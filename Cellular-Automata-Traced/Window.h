@@ -1,13 +1,13 @@
 #pragma once
 #include <Windows.h>
 #include "Renderer.h"
-#include "GridProcessor.h"
+//#include "GridProcessor.h"
 
 #include "GL/glut.h"
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock()+1000;
+time_t startTime = clock() + 1000;
 
 AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();
@@ -20,9 +20,11 @@ void drawFrame()
 
 void triggerReDraw()
 {
+	completion_future frame = RenderFrame();
+
 	framesInSec++;
 
-	//_camera->MoveCamera(Vec3(0.01f, 0, 0.1f));
+	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
 	_camera->RotateCamera(Vec3(0, -0.01f, 0));
 
 	if (clock() - startTime >= 1000)
@@ -34,7 +36,7 @@ void triggerReDraw()
 		//GameOfLife(_automota);
 	}
 
-	RenderFrame();
+	frame.wait();
 
 	glutPostRedisplay();
 }

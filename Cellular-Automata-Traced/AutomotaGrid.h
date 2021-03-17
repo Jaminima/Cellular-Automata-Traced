@@ -21,7 +21,7 @@ private:
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
 			int r = rand() % 10;
-			if (r == 0) Grid[i] = Color(rand()*mul, rand() * mul, rand() * mul);
+			if (r == 0) Grid[i] = Color(rand() * mul, rand() * mul, rand() * mul);
 			else Grid[i] = Color(0, 0, 0);
 		}
 	}
