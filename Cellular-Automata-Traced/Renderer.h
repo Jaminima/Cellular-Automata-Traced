@@ -77,30 +77,12 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	Hit hit = DetermineNextHop(dir, Cell, cam, 0);
 
 	for (int k = 0; k < maxView; k++) {
-		Cell = (dir * hit.j) + cam.Position;
+		Cell = (dir * (hit.j+0.01f)) + cam.Position;
 
 		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
 
 		if (!_automataGrid[indx].IsBlack()) {
 			return _automataGrid[indx];
-		}
-
-		int indx2;
-		switch (hit.axis)
-		{
-		case 0:
-			indx2 = ceilf(Cell.x + sgn(dir.x)) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
-			break;
-		case 1:
-			indx2 = floorf(Cell.x) + (ceilf(Cell.y + sgn(dir.y)) * _aw) + (floorf(Cell.z) * _aw * _ah);
-			break;
-		case 2:
-			indx2 = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (ceilf(Cell.z + sgn(dir.z)) * _aw * _ah);
-			break;
-		}
-
-		if (!_automataGrid[indx2].IsBlack()) {
-			return _automataGrid[indx2];
 		}
 
 		hit = DetermineNextHop(dir, Cell, cam, hit.j);
