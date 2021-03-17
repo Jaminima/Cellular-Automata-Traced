@@ -72,7 +72,7 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
 
-	Vec3 Cell = cam.Position + dir;
+	Vec3 Cell = cam.Position;
 
 	Hit hit = DetermineNextHop(dir, Cell, cam, 0);
 
