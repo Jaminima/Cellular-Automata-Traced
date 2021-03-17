@@ -20,10 +20,12 @@ void drawFrame()
 
 void triggerReDraw()
 {
+	completion_future frame = RenderFrame();
+
 	framesInSec++;
 
-	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
-	_camera->RotateCamera(Vec3(0, -0.01f, 0));
+	//_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
+	//_camera->RotateCamera(Vec3(0, -0.01f, 0));
 
 	if (clock() - startTime >= 1000)
 	{
@@ -34,7 +36,7 @@ void triggerReDraw()
 		//GameOfLife(_automota);
 	}
 
-	RenderFrame();
+	frame.wait();
 
 	glutPostRedisplay();
 }

@@ -25,7 +25,7 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	automota = _automata;
 	camera = _camera;
 
-	camera->Position = Vec3(_automata->w / 2, _automata->h / 2, _automata->l / 2);
+	camera->Position = Vec3((_automata->w / 2)+0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
 	Frame = new Color[w * h];
 }
 
@@ -40,15 +40,13 @@ public:
 Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam,float lastj) restrict(amp, cpu) {
 	Vec3 s = Vec3();
 
-	Cell += (Dir*0.01f);
-
-	if (Dir.x > 0) s.x = ceilf(Cell.x);
+	if (Dir.x >= 0) s.x = ceilf(Cell.x);
 	else s.x = floorf(Cell.x);
 
-	if (Dir.y > 0) s.y = ceilf(Cell.y);
+	if (Dir.y >= 0) s.y = ceilf(Cell.y);
 	else s.y = floorf(Cell.y);
 
-	if (Dir.z > 0) s.z = ceilf(Cell.z);
+	if (Dir.z >= 0) s.z = ceilf(Cell.z);
 	else s.z = floorf(Cell.z);
 
 	Vec3 _j = (s - cam.Position) / Dir;
@@ -57,7 +55,7 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam,float lastj) restrict(amp, 
 		if (_j.Data[i] > lastj) {
 			float next = _j.Data[(i + 1) % 3];
 			float nextnext = _j.Data[(i + 2) % 3];
-			if ((next <= lastj || next > _j.Data[i]) && (nextnext <= lastj || nextnext > _j.Data[i])) {
+			if ((next <= lastj || next >= _j.Data[i]) && (nextnext <= lastj || nextnext >= _j.Data[i])) {
 				Hit hit;
 				hit.axis = i;
 				hit.j = _j.Data[i];
@@ -77,7 +75,7 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	Hit hit = DetermineNextHop(dir, Cell, cam, 0);
 
 	for (int k = 0; k < maxView; k++) {
-		Cell = (dir * (hit.j+0.01f)) + cam.Position;
+		Cell = (dir * (hit.j + 0.01f)) + cam.Position;
 
 		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
 
@@ -90,7 +88,7 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	return Color(0, 0, 0);
 }
 
-void RenderFrame() {
+completion_future RenderFrame() {
 	float step_x = 2.0f / w;
 	float step_y = 2.0f / h;
 	unsigned int i = 0;
@@ -129,7 +127,7 @@ void RenderFrame() {
 		if (x == w) { x = 0; y++; }
 	}*/
 
-	_Frame.synchronize();
+	return _Frame.synchronize_async();
 }
 
 void OntoConsole() {
