@@ -17,6 +17,10 @@ unsigned int w = 1000, h = 1000;
 const unsigned int maxView = 100;
 Color* Frame;
 
+template <typename T> int sgn(T val) restrict(amp,cpu) {
+	return (T(0) < val) - (val < T(0));
+}
+
 void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	automota = _automata;
 	camera = _camera;
@@ -25,27 +29,81 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	Frame = new Color[w * h];
 }
 
+struct Hit {
+public:
+	int axis = 0;
+	float j = 0;
+
+	Hit() restrict(amp,cpu){}
+};
+
+Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam,float lastj) restrict(amp, cpu) {
+	Vec3 s = Vec3();
+
+	Cell += (Dir*0.01f);
+
+	if (Dir.x > 0) s.x = ceilf(Cell.x);
+	else s.x = floorf(Cell.x);
+
+	if (Dir.y > 0) s.y = ceilf(Cell.y);
+	else s.y = floorf(Cell.y);
+
+	if (Dir.z > 0) s.z = ceilf(Cell.z);
+	else s.z = floorf(Cell.z);
+
+	Vec3 _j = (s - cam.Position) / Dir;
+
+	for (int i = 0; i < 3; i++) {
+		if (_j.Data[i] > lastj) {
+			float next = _j.Data[(i + 1) % 3];
+			float nextnext = _j.Data[(i + 2) % 3];
+			if ((next <= lastj || next > _j.Data[i]) && (nextnext <= lastj || nextnext > _j.Data[i])) {
+				Hit hit;
+				hit.axis = i;
+				hit.j = _j.Data[i];
+				return hit;
+			}
+		}
+	}
+	return Hit();
+}
+
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
-	dir = dir * 0.5f;
 
-	for (int k = 1; k < maxView; k++) {
-		Vec3 Cell = (dir*k) + cam.Position;
+	Vec3 Cell = cam.Position + dir;
 
-		for (int kk = 0; kk < 3; kk++) {
-			float j;
-			if (Cell.Data[kk]>cam.Position.Data[kk]) j = (floorf(Cell.Data[kk]) - cam.Position.Data[kk]) / dir.Data[kk];
-			else j = (ceilf(Cell.Data[kk]) - cam.Position.Data[kk]) / dir.Data[kk];
+	Hit hit = DetermineNextHop(dir, Cell, cam, 0);
 
-			Vec3 _Cell = (dir * j) + cam.Position;
+	for (int k = 0; k < maxView; k++) {
+		Cell = (dir * hit.j) + cam.Position;
 
-			int indx = floorf(_Cell.x) + (floorf(_Cell.y) * _aw) + (floorf(_Cell.z) * _aw * _ah);
+		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
 
-			if (!_automataGrid[indx].IsBlack()) {
-				return _automataGrid[indx];
-			}
+		if (!_automataGrid[indx].IsBlack()) {
+			return _automataGrid[indx];
 		}
+
+		int indx2;
+		switch (hit.axis)
+		{
+		case 0:
+			indx2 = ceilf(Cell.x + sgn(dir.x)) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
+			break;
+		case 1:
+			indx2 = floorf(Cell.x) + (ceilf(Cell.y + sgn(dir.y)) * _aw) + (floorf(Cell.z) * _aw * _ah);
+			break;
+		case 2:
+			indx2 = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (ceilf(Cell.z + sgn(dir.z)) * _aw * _ah);
+			break;
+		}
+
+		if (!_automataGrid[indx2].IsBlack()) {
+			return _automataGrid[indx2];
+		}
+
+		hit = DetermineNextHop(dir, Cell, cam, hit.j);
 	}
 	return Color(0, 0, 0);
 }
@@ -75,6 +133,19 @@ void RenderFrame() {
 			_Frame[idx] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
 		}
 	);
+
+	/*for (int x = 0, y = 0; y < h;) {
+		float vx = (y * step_x) - 1;
+		float vy = (x * step_y) - 1;
+
+		vx *= cam.fov;
+		vy *= cam.fov * (_h / _w);
+
+		_Frame[y][x] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
+
+		x++;
+		if (x == w) { x = 0; y++; }
+	}*/
 
 	_Frame.synchronize();
 }

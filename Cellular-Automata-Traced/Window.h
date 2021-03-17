@@ -1,13 +1,13 @@
 #pragma once
 #include <Windows.h>
 #include "Renderer.h"
-#include "GridProcessor.h"
+//#include "GridProcessor.h"
 
 #include "GL/glut.h"
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock()+1000;
+time_t startTime = clock() + 1000;
 
 AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();

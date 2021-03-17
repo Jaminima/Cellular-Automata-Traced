@@ -67,6 +67,12 @@ public:
 		return N;
 	}
 
+	Vec3 operator/(Vec3 V)restrict(amp, cpu)
+	{
+		Vec3 N(x / V.x, y / V.y, z / V.z);
+		return N;
+	}
+
 	Vec3 operator*(Vec3 V)restrict(amp, cpu)
 	{
 		Vec3 N(V.x * x, V.y * y, V.z * z);
