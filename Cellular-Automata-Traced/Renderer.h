@@ -13,8 +13,8 @@ using namespace fast_math;
 AutomotaGrid* automota;
 Camera* camera;
 
-unsigned int w = 1920, h = 1080;
-const unsigned int maxView = 15;
+unsigned int w = 1000, h = 1000;
+const unsigned int maxView = 20;
 Color* Frame;
 
 template <typename T> int sgn(T val) restrict(amp,cpu) {
