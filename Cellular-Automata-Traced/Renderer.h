@@ -13,8 +13,8 @@ using namespace fast_math;
 AutomotaGrid* automota;
 Camera* camera;
 
-unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 100;
+unsigned int w = 1920, h = 1080;
+const unsigned int maxView = 15;
 Color* Frame;
 
 template <typename T> int sgn(T val) restrict(amp,cpu) {
@@ -98,7 +98,7 @@ completion_future RenderFrame() {
 
 	unsigned int _aw = automota->w, _ah = automota->h, _al = automota->l;
 
-	array_view<Color, 2> _Frame(w, h, Frame);
+	array_view<Color, 2> _Frame(h, w, Frame);
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
 	parallel_for_each(
