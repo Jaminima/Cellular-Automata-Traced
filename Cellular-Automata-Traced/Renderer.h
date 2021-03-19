@@ -13,8 +13,8 @@ using namespace fast_math;
 AutomotaGrid* automota;
 Camera* camera;
 
-unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 20;
+const unsigned int w = 1000, h = 1000;
+const unsigned int maxView = 100;
 Color* Frame;
 
 template <typename T> int sgn(T val) restrict(amp,cpu) {
@@ -89,14 +89,14 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 }
 
 completion_future RenderFrame() {
-	float step_x = 2.0f / w;
-	float step_y = 2.0f / h;
+	const float step_x = 2.0f / w;
+	const float step_y = 2.0f / h;
 	unsigned int i = 0;
 
 	Camera cam = *camera;
 	float _w = w, _h = h;
 
-	unsigned int _aw = automota->w, _ah = automota->h, _al = automota->l;
+	const unsigned int _aw = automota->w, _ah = automota->h, _al = automota->l;
 
 	array_view<Color, 2> _Frame(h, w, Frame);
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);

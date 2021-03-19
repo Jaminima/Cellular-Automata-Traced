@@ -18,14 +18,18 @@ void drawFrame()
 	glutSwapBuffers();
 }
 
+completion_future frame;
+completion_future gme;
+
+
 void triggerReDraw()
 {
-	completion_future frame = RenderFrame();
-
+	frame = RenderFrame();
+	
 	framesInSec++;
 
 	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
-	_camera->RotateCamera(Vec3(0, -0.01f, -0.01f));
+	//_camera->RotateCamera(Vec3(0, -0.01f, -0.01f));
 
 	if (clock() - startTime >= 1000)
 	{
@@ -33,12 +37,14 @@ void triggerReDraw()
 		framesInSec = 0;
 		startTime = clock();
 
-		GameOfLife(_automota);
+		gme = GameOfLife(_automota);
 	}
 
 	frame.wait();
 
 	glutPostRedisplay();
+
+	if (gme.valid()) gme.wait();
 }
 
 void SetupFrame(int argc, char** argv)

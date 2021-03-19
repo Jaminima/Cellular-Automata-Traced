@@ -47,10 +47,10 @@ int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_v
 	return alive;
 }
 
-void GameOfLife(AutomotaGrid* automata) {
-	unsigned int w = automata->w;
-	unsigned int h = automata->h;
-	unsigned int l = automata->l;
+completion_future GameOfLife(AutomotaGrid* automata) {
+	const unsigned int w = automata->w;
+	const unsigned int h = automata->h;
+	const unsigned int l = automata->l;
 
 	array_view<Color, 3> _automataGrid(w, h, l, automata->Grid);
 	array_view<Color, 3> _newGrid(w, h, l, automata->Grid);
@@ -79,5 +79,5 @@ void GameOfLife(AutomotaGrid* automata) {
 		if (y == h) { y = 0; z++; }
 	}*/
 
-	_newGrid.synchronize_async();
+	return _newGrid.synchronize_async(access_type_read_write);
 }
