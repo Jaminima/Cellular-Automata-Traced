@@ -8,7 +8,7 @@ using namespace concurrency;
 
 int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
 	int alive = 0;
-	
+
 	alive += !_automataGrid[x - 1][y - 1][x - 1].IsBlack();
 	alive += !_automataGrid[x][y - 1][x - 1].IsBlack();
 	alive += !_automataGrid[x + 1][y - 1][x - 1].IsBlack();

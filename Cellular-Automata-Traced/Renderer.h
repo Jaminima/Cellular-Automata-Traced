@@ -17,7 +17,7 @@ const unsigned int w = 1000, h = 1000;
 const unsigned int maxView = 100;
 Color* Frame;
 
-template <typename T> int sgn(T val) restrict(amp,cpu) {
+template <typename T> int sgn(T val) restrict(amp, cpu) {
 	return (T(0) < val) - (val < T(0));
 }
 
@@ -25,7 +25,7 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	automota = _automata;
 	camera = _camera;
 
-	camera->Position = Vec3((_automata->w / 2)+0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
+	camera->Position = Vec3((_automata->w / 2) + 0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
 	Frame = new Color[w * h];
 }
 
@@ -34,10 +34,10 @@ public:
 	int axis = 0;
 	float j = 0;
 
-	Hit() restrict(amp,cpu){}
+	Hit() restrict(amp, cpu) {}
 };
 
-Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam,float lastj) restrict(amp, cpu) {
+Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam, float lastj) restrict(amp, cpu) {
 	Vec3 s = Vec3();
 
 	if (Dir.x >= 0) s.x = ceilf(Cell.x);

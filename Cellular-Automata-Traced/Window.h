@@ -21,11 +21,10 @@ void drawFrame()
 completion_future frame;
 completion_future gme;
 
-
 void triggerReDraw()
 {
 	frame = RenderFrame();
-	
+
 	framesInSec++;
 
 	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
