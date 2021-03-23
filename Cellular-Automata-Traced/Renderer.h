@@ -38,7 +38,7 @@ public:
 	Hit(int _axis, float _j) restrict(amp, cpu) { axis = _axis; j = _j; }
 };
 
-Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam, float lastj) restrict(amp, cpu) {
+Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam) restrict(amp, cpu) {
 	Vec3 s = Vec3();
 
 	if (Dir.x >= 0) s.x = ceilf(Cell.x);
@@ -54,9 +54,7 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam, float lastj) restrict(amp,
 
 	if (_j.x <= _j.y && _j.x <= _j.z) return Hit(0, _j.x);
 	else if (_j.y <= _j.x && _j.y <= _j.z) return Hit(1, _j.y);
-	else if (_j.z <= _j.y && _j.z <= _j.x) return Hit(2, _j.z);
-
-	return Hit();
+	else return Hit(2, _j.z);
 }
 
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
@@ -64,19 +62,22 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 	dir = cam.RotateDirection(dir);
 
 	Vec3 Cell = cam.Position;
+	Color c;
 
-	Hit hit = DetermineNextHop(dir, Cell, cam, 0);
+	Hit hit = DetermineNextHop(dir, Cell, cam);
 
 	for (int k = 0; k < maxView; k++) {
 		Cell = (dir * (hit.j + 0.01f)) + cam.Position;
 
-		int indx = floorf(Cell.x) + (floorf(Cell.y) * _aw) + (floorf(Cell.z) * _aw * _ah);
+		int indx = floorf(Cell.x) + ((floorf(Cell.y) + (floorf(Cell.z) * _ah)) * _aw);
 
-		if (!_automataGrid[indx].IsBlack()) {
-			return _automataGrid[indx];
+		c = _automataGrid[indx];
+
+		if (!c.IsBlack()) {
+			return c;
 		}
 
-		hit = DetermineNextHop(dir, Cell, cam, hit.j);
+		hit = DetermineNextHop(dir, Cell, cam);
 	}
 	return Color(0, 0, 0);
 }
@@ -94,7 +95,7 @@ completion_future RenderFrame() {
 	array_view<Color, 2> _Frame(h, w, Frame);
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
-	/*parallel_for_each(
+	parallel_for_each(
 		_Frame.extent,
 		[=](index<2> idx) restrict(amp) {
 			float vx = (idx[1] * step_x) - 1;
@@ -105,9 +106,9 @@ completion_future RenderFrame() {
 
 			_Frame[idx] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
 		}
-	);*/
+	);
 
-	for (int x = 0, y = 0; y < h;) {
+	/*for (int x = 0, y = 0; y < h;) {
 		float vx = (y * step_x) - 1;
 		float vy = (x * step_y) - 1;
 
@@ -118,7 +119,7 @@ completion_future RenderFrame() {
 
 		x++;
 		if (x == w) { x = 0; y++; }
-	}
+	}*/
 
 	return _Frame.synchronize_async();
 }

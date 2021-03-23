@@ -68,19 +68,5 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 		}
 	);
 
-	/*for (int x = 0, y = 0, z = 0; z < l;) {
-		bool amIBlack = _automataGrid[z][y][x].IsBlack();
-		int alive = CountAliveNeighbours(x, y, z, _automataGrid, w, h, l);
-
-		if (alive < 2) _newGrid[z][y][x] = Color(0, 0, 0);
-		else if (alive > 4) _newGrid[z][y][x] = Color(0, 0, 0);
-		else if (alive > 5 && amIBlack) _newGrid[z][y][x] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
-		else _newGrid[z][y][x] = _automataGrid[z][y][x];
-
-		x++;
-		if (x == w) { x = 0; y++; }
-		if (y == h) { y = 0; z++; }
-	}*/
-
 	return _newGrid.synchronize_async(access_type_read_write);
 }
