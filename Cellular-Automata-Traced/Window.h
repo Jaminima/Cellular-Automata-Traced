@@ -8,7 +8,7 @@
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock() + 5000;
+time_t startTime = clock() + 1000;
 
 AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();
@@ -34,7 +34,8 @@ void triggerReDraw()
 		framesInSec = 0;
 		startTime = clock();
 
-		gme = GameOfLife(_automota);
+		if (*doGameTicks)
+			gme = GameOfLife(_automota);
 	}
 
 	frame.wait();

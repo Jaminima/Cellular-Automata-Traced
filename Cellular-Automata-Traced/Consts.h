@@ -7,6 +7,7 @@ const unsigned int w_half = w/2, h_half = h/2;
 
 const unsigned int maxView = 100;
 
+bool* doGameTicks = new bool();
 
 const float camMoveStep = 0.5f;
 const float camSensitvity = 0.001f;
