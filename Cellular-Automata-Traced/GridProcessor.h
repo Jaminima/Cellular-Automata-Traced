@@ -9,40 +9,40 @@ using namespace concurrency;
 int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
 	int alive = 0;
 
-	alive += !_automataGrid[x - 1][y - 1][x - 1].IsBlack();
-	alive += !_automataGrid[x][y - 1][x - 1].IsBlack();
-	alive += !_automataGrid[x + 1][y - 1][x - 1].IsBlack();
+	alive += !_automataGrid[z - 1][y - 1][x - 1].IsBlack();
+	alive += !_automataGrid[z][y - 1][x - 1].IsBlack();
+	alive += !_automataGrid[z + 1][y - 1][x - 1].IsBlack();
 
-	alive += !_automataGrid[x - 1][y][x - 1].IsBlack();
-	alive += !_automataGrid[x][y][x - 1].IsBlack();
-	alive += !_automataGrid[x + 1][y][x - 1].IsBlack();
+	alive += !_automataGrid[z - 1][y][x - 1].IsBlack();
+	alive += !_automataGrid[z][y][x - 1].IsBlack();
+	alive += !_automataGrid[z + 1][y][x - 1].IsBlack();
 
-	alive += !_automataGrid[x - 1][y + 1][x - 1].IsBlack();
-	alive += !_automataGrid[x][y + 1][x - 1].IsBlack();
-	alive += !_automataGrid[x + 1][y + 1][x - 1].IsBlack();
+	alive += !_automataGrid[z - 1][y + 1][x - 1].IsBlack();
+	alive += !_automataGrid[z][y + 1][x - 1].IsBlack();
+	alive += !_automataGrid[z + 1][y + 1][x - 1].IsBlack();
 
-	alive += !_automataGrid[x - 1][y - 1][x].IsBlack();
-	alive += !_automataGrid[x][y - 1][x].IsBlack();
-	alive += !_automataGrid[x + 1][y - 1][x].IsBlack();
+	alive += !_automataGrid[z - 1][y - 1][x].IsBlack();
+	alive += !_automataGrid[z][y - 1][x].IsBlack();
+	alive += !_automataGrid[z + 1][y - 1][x].IsBlack();
 
-	alive += !_automataGrid[x - 1][y][x].IsBlack();
-	alive += !_automataGrid[x + 1][y][x].IsBlack();
+	alive += !_automataGrid[z - 1][y][x].IsBlack();
+	alive += !_automataGrid[z + 1][y][x].IsBlack();
 
-	alive += !_automataGrid[x - 1][y + 1][x].IsBlack();
-	alive += !_automataGrid[x][y + 1][x].IsBlack();
-	alive += !_automataGrid[x + 1][y + 1][x].IsBlack();
+	alive += !_automataGrid[z - 1][y + 1][x].IsBlack();
+	alive += !_automataGrid[z][y + 1][x].IsBlack();
+	alive += !_automataGrid[z + 1][y + 1][x].IsBlack();
 
-	alive += !_automataGrid[x - 1][y - 1][x + 1].IsBlack();
-	alive += !_automataGrid[x][y - 1][x + 1].IsBlack();
-	alive += !_automataGrid[x + 1][y - 1][x + 1].IsBlack();
+	alive += !_automataGrid[z - 1][y - 1][x + 1].IsBlack();
+	alive += !_automataGrid[z][y - 1][x + 1].IsBlack();
+	alive += !_automataGrid[z + 1][y - 1][x + 1].IsBlack();
 
-	alive += !_automataGrid[x - 1][y][x + 1].IsBlack();
-	alive += !_automataGrid[x][y][x + 1].IsBlack();
-	alive += !_automataGrid[x + 1][y][x + 1].IsBlack();
+	alive += !_automataGrid[z - 1][y][x + 1].IsBlack();
+	alive += !_automataGrid[z][y][x + 1].IsBlack();
+	alive += !_automataGrid[z + 1][y][x + 1].IsBlack();
 
-	alive += !_automataGrid[x - 1][y + 1][x + 1].IsBlack();
-	alive += !_automataGrid[x][y + 1][x + 1].IsBlack();
-	alive += !_automataGrid[x + 1][y + 1][x + 1].IsBlack();
+	alive += !_automataGrid[z - 1][y + 1][x + 1].IsBlack();
+	alive += !_automataGrid[z][y + 1][x + 1].IsBlack();
+	alive += !_automataGrid[z + 1][y + 1][x + 1].IsBlack();
 
 	return alive;
 }
@@ -69,10 +69,13 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 	);
 
 	/*for (int x = 0, y = 0, z = 0; z < l;) {
-		int alive = CountAliveNeighbours(z, y, x, _automataGrid, w, h, l);
+		bool amIBlack = _automataGrid[z][y][x].IsBlack();
+		int alive = CountAliveNeighbours(x, y, z, _automataGrid, w, h, l);
 
-			if (alive >= 0) _automataGrid[z][y][x] = Color(0, 0, 0);
-			else _automataGrid[z][y][x] = _automataGrid[z][y][x];
+		if (alive < 2) _newGrid[z][y][x] = Color(0, 0, 0);
+		else if (alive > 4) _newGrid[z][y][x] = Color(0, 0, 0);
+		else if (alive > 5 && amIBlack) _newGrid[z][y][x] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
+		else _newGrid[z][y][x] = _automataGrid[z][y][x];
 
 		x++;
 		if (x == w) { x = 0; y++; }
