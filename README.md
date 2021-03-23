@@ -80,3 +80,10 @@ Brand new cells use the average color of its neighbours.</p>
 Border Effect at the edge of the world</p>
 <img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/10.png" alt="" width=""/>
 </details>
+
+<details>
+  <summary>Chaoticly Growing Automota</summary>
+  <p>
+A rather interesting growth from a small original set of cells.</p>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/11.gif" alt="" width=""/>
+</details>

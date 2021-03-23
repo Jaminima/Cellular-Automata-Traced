@@ -114,7 +114,7 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid);
 
 			if (alive == 4 && amIBlack) _newGrid[idx] = AverageOfNeighbours(idx[2], idx[1], idx[0], _automataGrid, alive);
-			else if (alive < 3) _newGrid[idx] = Color(0, 0, 0);
+			else if (alive < 4 || alive > 4) _newGrid[idx] = Color(0, 0, 0);
 			else _newGrid[idx] = _automataGrid[idx];
 		}
 	);
