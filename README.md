@@ -59,3 +59,17 @@ A thatched grid pattern becomes visible on squares at the edge of the render dis
 The exact cause of this is unkown (for now).</br></p>
 <img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/7.gif" alt="" width=""/>
 </details>
+
+<details>
+  <summary>More Visible Rules</summary>
+  <p>
+Cells dissapear and new white cells appear into the world.</p>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/8.gif" alt="" width=""/>
+</details>
+
+<details>
+  <summary>Average Color for new cells</summary>
+  <p>
+Brand new cells use the average color of its neighbours.</p>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/9.gif" alt="" width=""/>
+</details>
