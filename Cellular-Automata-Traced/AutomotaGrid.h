@@ -13,22 +13,20 @@ const unsigned int mul = UINT_MAX / RAND_MAX;
 
 class AutomotaGrid
 {
-private:
+public:
+	Color* Grid;
+	unsigned int w = 200, h = 200, l = 200;
 
 	void InitGrid() {
 		srand(time(NULL));
 		Grid = new Color[h * w * l];
 
 		for (unsigned int i = 0; i < h * w * l; i++) {
-			int r = rand() % 50;
+			int r = rand() % 100;
 			if (r == 0) Grid[i] = Color(rand() * mul, rand() * mul, rand() * mul);
 			else Grid[i] = Color(0, 0, 0);
 		}
 	}
-
-public:
-	Color* Grid;
-	unsigned int w = 200, h = 200, l = 200;
 
 	AutomotaGrid() {
 		this->InitGrid();

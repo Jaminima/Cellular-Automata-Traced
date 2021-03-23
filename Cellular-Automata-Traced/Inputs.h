@@ -4,7 +4,7 @@
 #include "GL/freeglut.h"
 #include "Consts.h"
 
-Camera *_input_cam_ref;
+Camera* _input_cam_ref;
 
 void KeyboardDepressed(unsigned char key, int x, int y) {
 	Vec3 camMove(0, 0, 0);
@@ -16,6 +16,8 @@ void KeyboardDepressed(unsigned char key, int x, int y) {
 	if (key == 'd') camMove.x += camMoveStep;
 
 	if (key == 'p') { *doGameTicks = !*doGameTicks; }
+
+	if (key == 'r') { _automota->InitGrid(); }
 
 	if (key == 'q') exit(0);
 

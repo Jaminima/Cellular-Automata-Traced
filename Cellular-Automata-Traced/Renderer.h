@@ -55,7 +55,7 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam) restrict(amp, cpu) {
 	if (_j.z <= _j.x && _j.z <= _j.y) return Hit(2, _j.z);
 	if (_j.x <= _j.y && _j.x <= _j.z) return Hit(0, _j.x);
 	if (_j.y <= _j.x && _j.y <= _j.z) return Hit(1, _j.y);
-	return Hit((_j.x+_j.y+_j.z)/3, 0);
+	return Hit((_j.x + _j.y + _j.z) / 3, 0);
 }
 
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
@@ -81,7 +81,7 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 		}
 
 		if (Cell.z < 0 || Cell.z>_al) {
-			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(UINT_MAX,0, 0);
+			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(UINT_MAX, 0, 0);
 			else return Color();
 		}
 

@@ -8,9 +8,9 @@
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock() + 1000;
+time_t fpsTime = clock() + 1000;
+time_t tickTime = clock() + 1000;
 
-AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();
 
 void drawFrame()
@@ -28,15 +28,19 @@ void triggerReDraw()
 
 	framesInSec++;
 
-	if (clock() - startTime >= 1000)
+	if (clock() - fpsTime >= 1000)
 	{
 		printf_s("You averaged %d fps\n", framesInSec);
 		framesInSec = 0;
-		startTime = clock();
-
-		if (*doGameTicks)
-			gme = GameOfLife(_automota);
+		fpsTime = clock();
 	}
+
+	if (*doGameTicks)
+		if (clock() - tickTime >= 500)
+		{
+			gme = GameOfLife(_automota);
+			tickTime = clock();
+		}
 
 	frame.wait();
 
