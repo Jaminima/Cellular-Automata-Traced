@@ -17,7 +17,7 @@ public:
 	}
 };
 
-int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
+int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid) restrict(amp, cpu) {
 	int alive = 0;
 
 	alive += !_automataGrid[z - 1][y - 1][x - 1].IsBlack();
@@ -58,7 +58,7 @@ int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_v
 	return alive;
 }
 
-Color AverageOfNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
+Color AverageOfNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int alive) restrict(amp, cpu) {
 	Color average = _automataGrid[z - 1][y - 1][x - 1]
 		+ _automataGrid[z][y - 1][x - 1]
 		+ _automataGrid[z + 1][y - 1][x - 1]
@@ -94,6 +94,8 @@ Color AverageOfNeighbours(unsigned int x, unsigned int y, unsigned int z, array_
 		+ _automataGrid[z][y + 1][x + 1]
 		+ _automataGrid[z + 1][y + 1][x + 1];
 
+	average /= alive/3.0f;
+
 	return average;
 }
 
@@ -109,9 +111,9 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 		_automataGrid.extent,
 		[=](index<3> idx) restrict(amp) {
 			bool amIBlack = _automataGrid[idx].IsBlack();
-			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
+			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid);
 
-			if (alive == 4 && amIBlack) _newGrid[idx] = AverageOfNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
+			if (alive == 4 && amIBlack) _newGrid[idx] = AverageOfNeighbours(idx[2], idx[1], idx[0], _automataGrid, alive);
 			else if ((alive < 4 || alive > 5)&& !amIBlack) _newGrid[idx] = Color(0,0,0);
 			else _newGrid[idx] = _automataGrid[idx];
 		}

@@ -25,8 +25,8 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	automota = _automata;
 	camera = _camera;
 
-	//camera->Position = Vec3((_automata->w / 2) + 0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
-	camera->Position = Vec3(0, (_automata->h / 2) + 0.5f, 0);
+	camera->Position = Vec3((_automata->w / 2) + 0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
+	//camera->Position = Vec3(0, (_automata->h / 2) + 0.5f, 0);
 	Frame = new Color[w * h];
 }
 
