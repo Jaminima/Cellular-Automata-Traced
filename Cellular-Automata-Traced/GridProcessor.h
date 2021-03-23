@@ -61,9 +61,8 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 			bool amIBlack = _automataGrid[idx].IsBlack();
 			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
 
-			if (alive < 2) _newGrid[idx] = Color(0, 0, 0);
-			else if (alive > 4) _newGrid[idx] = Color(0, 0, 0);
-			else if (alive > 5 && amIBlack) _newGrid[idx] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			if (alive == 4 && amIBlack) _newGrid[idx] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
+			else if (alive != 4 && !amIBlack) _newGrid[idx] = Color(0,0,0);
 			else _newGrid[idx] = _automataGrid[idx];
 		}
 	);

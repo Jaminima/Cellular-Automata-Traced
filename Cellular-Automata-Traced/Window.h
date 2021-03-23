@@ -7,7 +7,7 @@
 #include "GL/freeglut.h"
 
 unsigned int framesInSec = 0;
-time_t startTime = clock() + 1000;
+time_t startTime = clock() + 5000;
 
 AutomotaGrid* _automota = new AutomotaGrid();
 Camera* _camera = new Camera();
