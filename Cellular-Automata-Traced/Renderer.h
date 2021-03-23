@@ -3,6 +3,7 @@
 #include "vec3.h"
 #include "Color.h"
 #include "Camera.h"
+#include "Consts.h"
 
 #include <amp.h>
 #include <amp_math.h>
@@ -13,8 +14,6 @@ using namespace fast_math;
 AutomotaGrid* automota;
 Camera* camera;
 
-const unsigned int w = 1000, h = 1000;
-const unsigned int maxView = 100;
 Color* Frame;
 
 template <typename T> int sgn(T val) restrict(amp, cpu) {

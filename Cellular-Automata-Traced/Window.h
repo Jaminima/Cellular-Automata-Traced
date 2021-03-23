@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "Renderer.h"
+#include "Inputs.h"
 #include "GridProcessor.h"
 
 #include "GL/glut.h"
@@ -27,9 +28,6 @@ void triggerReDraw()
 
 	framesInSec++;
 
-	_camera->MoveCamera(Vec3(0.01f, 0.01f, 0.1f));
-	_camera->RotateCamera(Vec3(0, -0.01f, -0.01f));
-
 	if (clock() - startTime >= 1000)
 	{
 		printf_s("You averaged %d fps\n", framesInSec);
@@ -48,6 +46,7 @@ void triggerReDraw()
 
 void SetupFrame(int argc, char** argv)
 {
+	_input_cam_ref = _camera;
 	Setup(_automota, _camera);
 
 	glutInit(&argc, argv);
@@ -58,8 +57,8 @@ void SetupFrame(int argc, char** argv)
 	glutDisplayFunc(drawFrame);
 	glutIdleFunc(triggerReDraw);
 
-	//glutPassiveMotionFunc(MouseMove);
-	//glutKeyboardFunc(KeyboardDepressed);
+	glutPassiveMotionFunc(MouseMove);
+	glutKeyboardFunc(KeyboardDepressed);
 
 	glutMainLoop();
 }
