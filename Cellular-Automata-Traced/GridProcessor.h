@@ -6,6 +6,17 @@
 #include <iostream>
 using namespace concurrency;
 
+struct Neighbours {
+public:
+	Color average;
+	int alive;
+
+	Neighbours(Color _average, int _alive) restrict(amp, cpu) {
+		average = _average;
+		alive = _alive;
+	}
+};
+
 int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
 	int alive = 0;
 
@@ -47,6 +58,45 @@ int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_v
 	return alive;
 }
 
+Color AverageOfNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int w, unsigned int h, unsigned int l) restrict(amp, cpu) {
+	Color average = _automataGrid[z - 1][y - 1][x - 1]
+		+ _automataGrid[z][y - 1][x - 1]
+		+ _automataGrid[z + 1][y - 1][x - 1]
+
+		+ _automataGrid[z - 1][y][x - 1]
+		+ _automataGrid[z][y][x - 1]
+		+ _automataGrid[z + 1][y][x - 1]
+
+		+ _automataGrid[z - 1][y + 1][x - 1]
+		+ _automataGrid[z][y + 1][x - 1]
+		+ _automataGrid[z + 1][y + 1][x - 1]
+
+		+ _automataGrid[z - 1][y - 1][x]
+		+ _automataGrid[z][y - 1][x]
+		+ _automataGrid[z + 1][y - 1][x]
+
+		+ _automataGrid[z - 1][y][x]
+		+ _automataGrid[z + 1][y][x]
+
+		+ _automataGrid[z - 1][y + 1][x]
+		+ _automataGrid[z][y + 1][x]
+		+ _automataGrid[z + 1][y + 1][x]
+
+		+ _automataGrid[z - 1][y - 1][x + 1]
+		+ _automataGrid[z][y - 1][x + 1]
+		+ _automataGrid[z + 1][y - 1][x + 1]
+
+		+ _automataGrid[z - 1][y][x + 1]
+		+ _automataGrid[z][y][x + 1]
+		+ _automataGrid[z + 1][y][x + 1]
+
+		+ _automataGrid[z - 1][y + 1][x + 1]
+		+ _automataGrid[z][y + 1][x + 1]
+		+ _automataGrid[z + 1][y + 1][x + 1];
+
+	return average;
+}
+
 completion_future GameOfLife(AutomotaGrid* automata) {
 	const unsigned int w = automata->w;
 	const unsigned int h = automata->h;
@@ -61,8 +111,8 @@ completion_future GameOfLife(AutomotaGrid* automata) {
 			bool amIBlack = _automataGrid[idx].IsBlack();
 			int alive = CountAliveNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
 
-			if (alive == 4 && amIBlack) _newGrid[idx] = Color(UINT_MAX, UINT_MAX, UINT_MAX);
-			else if (alive != 4 && !amIBlack) _newGrid[idx] = Color(0,0,0);
+			if (alive == 4 && amIBlack) _newGrid[idx] = AverageOfNeighbours(idx[2], idx[1], idx[0], _automataGrid, w, h, l);
+			else if ((alive < 4 || alive > 5)&& !amIBlack) _newGrid[idx] = Color(0,0,0);
 			else _newGrid[idx] = _automataGrid[idx];
 		}
 	);

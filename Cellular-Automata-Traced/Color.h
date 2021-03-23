@@ -11,6 +11,19 @@ public:
 		A = UINT_MAX;
 	};
 
+	Color operator+(Color V)restrict(amp, cpu)
+	{
+		Color N(R + V.R, G + V.G, B + V.B);
+		return N;
+	}
+
+	void operator+=(Color V) restrict(amp, cpu)
+	{
+		R += V.R;
+		G += V.G;
+		B += V.B;
+	}
+
 	Color(unsigned int R, unsigned int G, unsigned int B) restrict(amp, cpu) {
 		this->R = R;
 		this->G = G;
