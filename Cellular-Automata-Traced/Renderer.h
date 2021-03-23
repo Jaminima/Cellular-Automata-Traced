@@ -35,6 +35,7 @@ public:
 	float j = 0;
 
 	Hit() restrict(amp, cpu) {}
+	Hit(int _axis, float _j) restrict(amp, cpu) { axis = _axis; j = _j; }
 };
 
 Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam, float lastj) restrict(amp, cpu) {
@@ -51,18 +52,10 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam, float lastj) restrict(amp,
 
 	Vec3 _j = (s - cam.Position) / Dir;
 
-	for (int i = 0; i < 3; i++) {
-		if (_j.Data[i] > lastj) {
-			float next = _j.Data[(i + 1) % 3];
-			float nextnext = _j.Data[(i + 2) % 3];
-			if ((next <= lastj || next >= _j.Data[i]) && (nextnext <= lastj || nextnext >= _j.Data[i])) {
-				Hit hit;
-				hit.axis = i;
-				hit.j = _j.Data[i];
-				return hit;
-			}
-		}
-	}
+	if (_j.x <= _j.y && _j.x <= _j.z) return Hit(0, _j.x);
+	else if (_j.y <= _j.x && _j.y <= _j.z) return Hit(1, _j.y);
+	else if (_j.z <= _j.y && _j.z <= _j.x) return Hit(2, _j.z);
+
 	return Hit();
 }
 
@@ -101,7 +94,7 @@ completion_future RenderFrame() {
 	array_view<Color, 2> _Frame(h, w, Frame);
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
-	parallel_for_each(
+	/*parallel_for_each(
 		_Frame.extent,
 		[=](index<2> idx) restrict(amp) {
 			float vx = (idx[1] * step_x) - 1;
@@ -112,9 +105,9 @@ completion_future RenderFrame() {
 
 			_Frame[idx] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
 		}
-	);
+	);*/
 
-	/*for (int x = 0, y = 0; y < h;) {
+	for (int x = 0, y = 0; y < h;) {
 		float vx = (y * step_x) - 1;
 		float vy = (x * step_y) - 1;
 
@@ -125,7 +118,7 @@ completion_future RenderFrame() {
 
 		x++;
 		if (x == w) { x = 0; y++; }
-	}*/
+	}
 
 	return _Frame.synchronize_async();
 }
