@@ -73,3 +73,10 @@ Cells dissapear and new white cells appear into the world.</p>
 Brand new cells use the average color of its neighbours.</p>
 <img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/9.gif" alt="" width=""/>
 </details>
+
+<details>
+  <summary>World Border</summary>
+  <p>
+Border Effect at the edge of the world</p>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/10.png" alt="" width=""/>
+</details>

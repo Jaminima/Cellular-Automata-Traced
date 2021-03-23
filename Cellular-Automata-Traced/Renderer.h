@@ -52,9 +52,10 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam) restrict(amp, cpu) {
 
 	Vec3 _j = (s - cam.Position) / Dir;
 
+	if (_j.z <= _j.x && _j.z <= _j.y) return Hit(2, _j.z);
 	if (_j.x <= _j.y && _j.x <= _j.z) return Hit(0, _j.x);
-	else if (_j.y <= _j.x && _j.y <= _j.z) return Hit(1, _j.y);
-	else return Hit(2, _j.z);
+	if (_j.y <= _j.x && _j.y <= _j.z) return Hit(1, _j.y);
+	return Hit((_j.x+_j.y+_j.z)/3, 0);
 }
 
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
@@ -68,6 +69,21 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 
 	for (int k = 0; k < maxView; k++) {
 		Cell = (dir * (hit.j + 0.01f)) + cam.Position;
+
+		if (Cell.x < 0 || Cell.x > _aw) {
+			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, 0, UINT_MAX);
+			else return Color();
+		}
+
+		if (Cell.y < 0 || Cell.y>_ah) {
+			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, 0, UINT_MAX);
+			else return Color();
+		}
+
+		if (Cell.z < 0 || Cell.z>_al) {
+			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(0,0, UINT_MAX);
+			else return Color();
+		}
 
 		int indx = floorf(Cell.x) + ((floorf(Cell.y) + (floorf(Cell.z) * _ah)) * _aw);
 
