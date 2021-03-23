@@ -24,8 +24,8 @@ void Setup(AutomotaGrid* _automata, Camera* _camera) {
 	automota = _automata;
 	camera = _camera;
 
-	camera->Position = Vec3((_automata->w / 2) + 0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
-	//camera->Position = Vec3(0, (_automata->h / 2) + 0.5f, 0);
+	//camera->Position = Vec3((_automata->w / 2) + 0.5f, (_automata->h / 2) + 0.5f, (_automata->l / 2) + 0.5f);
+	camera->Position = Vec3(5, 5, 5);
 	Frame = new Color[w * h];
 }
 
@@ -76,12 +76,12 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 		}
 
 		if (Cell.y < 0 || Cell.y>_ah) {
-			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, 0, UINT_MAX);
+			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, UINT_MAX, 0);
 			else return Color();
 		}
 
 		if (Cell.z < 0 || Cell.z>_al) {
-			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(0,0, UINT_MAX);
+			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(UINT_MAX,0, 0);
 			else return Color();
 		}
 
