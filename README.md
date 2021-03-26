@@ -90,15 +90,14 @@ A rather interesting growth from a small original set of cells.</p>
 
 ## Reduced Tracing Aliasing
 
-To allow reduced tracing to function, it is neccesarry to fill in blanks around each ray. The pattern in which this is done has been through several itterations. Shown in order below.
+To allow reduced tracing to function, it is neccesarry to fill in blanks around each ray. This causes a fuzzy effect but gains us 7FPS on 35FPS. The effect is shown below. Original Left, Reduced Right.
 </br>
-<img title="" src="./Demo-Clips/Reduced-Ray/PxlV1.png" alt="" width="" height="300px"/>
-<img title="" src="./Demo-Clips/Reduced-Ray/PxlV2.png" alt="" width="" height="300px"/>
-<img title="" src="./Demo-Clips/Reduced-Ray/PxlV3.png" alt="" width="" height="300px"/>
+<img title="" src="./Demo-Clips/Reduced-Ray/Original.png" alt="" width="49%"/>
+<img title="" src="./Demo-Clips/Reduced-Ray/Reduced.png" alt="" width="49%"/>
 
 <details>
   <summary>Flying Round The World</summary>
   <p>
-A fuzzy effect is present on objects in the scene. Result of the reduced ray count.</p>
+An explore of  the evolving world</p>
 <img title="" src="./Demo-Clips/Reduced-Ray/1.gif" alt="" width=""/>
 </details>
