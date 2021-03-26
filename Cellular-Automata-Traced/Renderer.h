@@ -61,6 +61,7 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam) restrict(amp, cpu) {
 float subtract_abs(float f1, float f2) restrict(amp,cpu) {
 	return f1 > f2 ? f1 - f2 : f2 - f1;
 }
+
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
@@ -115,15 +116,33 @@ completion_future RenderFrame() {
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
 	parallel_for_each(
+
+#ifdef EnableReducedTracing
+		_Frame.extent/2,
+#else
 		_Frame.extent,
+#endif
 		[=](index<2> idx) restrict(amp) {
+#ifdef EnableReducedTracing
+			idx *= 2;
+#endif
+
+			
 			float vx = (idx[1] * step_x) - 1;
 			float vy = (idx[0] * step_y) - 1;
 
 			vx *= cam.fov;
 			vy *= cam.fov * (_h / _w);
 
-			_Frame[idx] = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
+			Color pxl = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
+
+			_Frame[idx] = pxl;
+
+#ifdef EnableReducedTracing
+			_Frame[idx[0]][idx[1]+1] = pxl;
+			_Frame[idx[0]+1][idx[1]] = pxl;
+			_Frame[idx[0]-1][idx[1]-1] = pxl;
+#endif
 		}
 	);
 
