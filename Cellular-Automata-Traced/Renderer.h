@@ -58,6 +58,9 @@ Hit DetermineNextHop(Vec3 Dir, Vec3 Cell, Camera cam) restrict(amp, cpu) {
 	return Hit((_j.x + _j.y + _j.z) / 3, 0);
 }
 
+float subtract_abs(float f1, float f2) restrict(amp,cpu) {
+	return f1 > f2 ? f1 - f2 : f2 - f1;
+}
 Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _automataGrid, Camera cam, unsigned int _aw, unsigned int _ah, unsigned int _al) restrict(amp, cpu) {
 	Vec3 dir(x, y, 1);
 	dir = cam.RotateDirection(dir);
@@ -71,17 +74,17 @@ Color RenderViewRay(float x, float y, unsigned int i, array_view<Color, 1> _auto
 		Cell = (dir * (hit.j + 0.01f)) + cam.Position;
 
 		if (Cell.x < 0 || Cell.x > _aw) {
-			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, 0, UINT_MAX);
+			if (subtract_abs(Cell.z,roundf(Cell.z)) < 0.05f) return Color(0, 0, UINT_MAX);
 			else return Color();
 		}
 
 		if (Cell.y < 0 || Cell.y>_ah) {
-			if (fabsf(Cell.z - roundf(Cell.z)) < 0.05f) return Color(0, UINT_MAX, 0);
+			if (subtract_abs(Cell.z,roundf(Cell.z)) < 0.05f) return Color(0, UINT_MAX, 0);
 			else return Color();
 		}
 
 		if (Cell.z < 0 || Cell.z>_al) {
-			if (fabsf(Cell.y - roundf(Cell.y)) < 0.05f) return Color(UINT_MAX, 0, 0);
+			if (subtract_abs(Cell.y,roundf(Cell.y)) < 0.05f) return Color(UINT_MAX, 0, 0);
 			else return Color();
 		}
 
