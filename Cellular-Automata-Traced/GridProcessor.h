@@ -20,79 +20,27 @@ public:
 int CountAliveNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid) restrict(amp, cpu) {
 	int alive = 0;
 
-	alive += !_automataGrid[z - 1][y - 1][x - 1].IsBlack();
-	alive += !_automataGrid[z][y - 1][x - 1].IsBlack();
-	alive += !_automataGrid[z + 1][y - 1][x - 1].IsBlack();
-
-	alive += !_automataGrid[z - 1][y][x - 1].IsBlack();
-	alive += !_automataGrid[z][y][x - 1].IsBlack();
-	alive += !_automataGrid[z + 1][y][x - 1].IsBlack();
-
-	alive += !_automataGrid[z - 1][y + 1][x - 1].IsBlack();
-	alive += !_automataGrid[z][y + 1][x - 1].IsBlack();
-	alive += !_automataGrid[z + 1][y + 1][x - 1].IsBlack();
-
-	alive += !_automataGrid[z - 1][y - 1][x].IsBlack();
-	alive += !_automataGrid[z][y - 1][x].IsBlack();
-	alive += !_automataGrid[z + 1][y - 1][x].IsBlack();
-
-	alive += !_automataGrid[z - 1][y][x].IsBlack();
-	alive += !_automataGrid[z + 1][y][x].IsBlack();
-
-	alive += !_automataGrid[z - 1][y + 1][x].IsBlack();
-	alive += !_automataGrid[z][y + 1][x].IsBlack();
-	alive += !_automataGrid[z + 1][y + 1][x].IsBlack();
-
-	alive += !_automataGrid[z - 1][y - 1][x + 1].IsBlack();
-	alive += !_automataGrid[z][y - 1][x + 1].IsBlack();
-	alive += !_automataGrid[z + 1][y - 1][x + 1].IsBlack();
-
-	alive += !_automataGrid[z - 1][y][x + 1].IsBlack();
-	alive += !_automataGrid[z][y][x + 1].IsBlack();
-	alive += !_automataGrid[z + 1][y][x + 1].IsBlack();
-
-	alive += !_automataGrid[z - 1][y + 1][x + 1].IsBlack();
-	alive += !_automataGrid[z][y + 1][x + 1].IsBlack();
-	alive += !_automataGrid[z + 1][y + 1][x + 1].IsBlack();
+	for (int _x = -1, _y = -1; _y <= 1;) {
+		alive += !_automataGrid[z - 1][y + _y][x + _x].IsBlack();
+		alive += !_automataGrid[z][y + _y][x + _x].IsBlack();
+		alive += !_automataGrid[z + 1][y + _y][x + _x].IsBlack();
+		_x++;
+		if (_x == 2) { _y++; _x = -1; }
+	}
 
 	return alive;
 }
 
 Color AverageOfNeighbours(unsigned int x, unsigned int y, unsigned int z, array_view<Color, 3> _automataGrid, unsigned int alive) restrict(amp, cpu) {
-	Color average = _automataGrid[z - 1][y - 1][x - 1]
-		+ _automataGrid[z][y - 1][x - 1]
-		+ _automataGrid[z + 1][y - 1][x - 1]
-
-		+ _automataGrid[z - 1][y][x - 1]
-		+ _automataGrid[z][y][x - 1]
-		+ _automataGrid[z + 1][y][x - 1]
-
-		+ _automataGrid[z - 1][y + 1][x - 1]
-		+ _automataGrid[z][y + 1][x - 1]
-		+ _automataGrid[z + 1][y + 1][x - 1]
-
-		+ _automataGrid[z - 1][y - 1][x]
-		+ _automataGrid[z][y - 1][x]
-		+ _automataGrid[z + 1][y - 1][x]
-
-		+ _automataGrid[z - 1][y][x]
-		+ _automataGrid[z + 1][y][x]
-
-		+ _automataGrid[z - 1][y + 1][x]
-		+ _automataGrid[z][y + 1][x]
-		+ _automataGrid[z + 1][y + 1][x]
-
-		+ _automataGrid[z - 1][y - 1][x + 1]
-		+ _automataGrid[z][y - 1][x + 1]
-		+ _automataGrid[z + 1][y - 1][x + 1]
-
-		+ _automataGrid[z - 1][y][x + 1]
-		+ _automataGrid[z][y][x + 1]
-		+ _automataGrid[z + 1][y][x + 1]
-
-		+ _automataGrid[z - 1][y + 1][x + 1]
-		+ _automataGrid[z][y + 1][x + 1]
-		+ _automataGrid[z + 1][y + 1][x + 1];
+	Color average;
+		
+	for (int _x = -1, _y = -1; _y <= 1;) {
+		average += _automataGrid[z - 1][y + _y][x + _x];
+		average += _automataGrid[z][y + _y][x + _x];
+		average += _automataGrid[z + 1][y + _y][x + _x];
+		_x++;
+		if (_x == 2) { _y++; _x = -1; }
+	}
 
 	average /= alive / 3.0f;
 
