@@ -78,6 +78,8 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\packages\freeglut.redist.2.8.1.15\build\native\bin\v110\x64\Release\dynamic\freeglut.dll" />
+    <CopyFileToFolders Include="..\packages\freeglut.redist.2.8.1.15\build\native\bin\v110\x64\Release\dynamic\freeglut.dll">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
