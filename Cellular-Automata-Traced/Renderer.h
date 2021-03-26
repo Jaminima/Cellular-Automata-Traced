@@ -116,9 +116,18 @@ completion_future RenderFrame() {
 	array_view<Color, 1> _automataGrid(automota->w * automota->h * automota->l, automota->Grid);
 
 	parallel_for_each(
+
+#ifdef EnableReducedTracing
 		_Frame.extent/2,
+#else
+		_Frame.extent,
+#endif
 		[=](index<2> idx) restrict(amp) {
+#ifdef EnableReducedTracing
 			idx *= 2;
+#endif
+
+			
 			float vx = (idx[1] * step_x) - 1;
 			float vy = (idx[0] * step_y) - 1;
 
@@ -129,9 +138,11 @@ completion_future RenderFrame() {
 
 			_Frame[idx] = pxl;
 
+#ifdef EnableReducedTracing
 			_Frame[idx[0]][idx[1]+1] = pxl;
 			_Frame[idx[0]+1][idx[1]] = pxl;
 			_Frame[idx[0]-1][idx[1]-1] = pxl;
+#endif
 		}
 	);
 

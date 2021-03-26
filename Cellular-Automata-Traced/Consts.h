@@ -1,5 +1,7 @@
 #pragma once
 
+#define EnableReducedTracing
+
 #ifndef __Consts
 const unsigned int w = 1000, h = 1000;
 
@@ -12,6 +14,6 @@ AutomotaGrid* _automota = new AutomotaGrid();
 
 const float camMoveStep = 0.5f;
 const float camSensitvity = 0.001f;
-#endif // !1
+#endif
 
 #define __Consts
