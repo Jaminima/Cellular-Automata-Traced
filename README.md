@@ -87,3 +87,10 @@ Border Effect at the edge of the world</p>
 A rather interesting growth from a small original set of cells.</p>
 <img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/11.gif" alt="" width=""/>
 </details>
+
+## Reduced Tracing Aliasing
+
+To allow reduced tracing to function, it is neccesarry to fill in blanks around each ray. The pattern in which this is done has been through several itterations. Shown in order below.
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/Reduced-Ray/PxlV1.png" alt="" width=""/>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/Reduced-Ray/PxlV2.png" alt="" width=""/>
+<img title="" src="https://github.com/Jaminima/Cellular-Automata-Traced/blob/main/Demo-Clips/Reduced-Ray/PxlV3.png" alt="" width=""/>

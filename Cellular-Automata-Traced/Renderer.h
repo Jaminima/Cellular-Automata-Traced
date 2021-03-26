@@ -128,9 +128,10 @@ completion_future RenderFrame() {
 			Color pxl = RenderViewRay(vx, vy, i, _automataGrid, cam, _aw, _ah, _al);
 
 			_Frame[idx] = pxl;
-			_Frame[idx + 1] = pxl;
-			_Frame[idx - _w] = pxl;
-			_Frame[idx + _w - 1] = pxl;
+
+			_Frame[idx[0]][idx[1]+1] = pxl;
+			_Frame[idx[0]+1][idx[1]] = pxl;
+			_Frame[idx[0]-1][idx[1]-1] = pxl;
 		}
 	);
 
