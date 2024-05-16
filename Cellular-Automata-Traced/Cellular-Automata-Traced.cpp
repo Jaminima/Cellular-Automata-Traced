@@ -1,4 +1,6 @@
 #include <iostream>
+#define _SILENCE_AMP_DEPRECATION_WARNINGS
+
 #include "Window.h"
 
 #include <amp.h>
